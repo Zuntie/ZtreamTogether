@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <title>ZtreamTogether - Video Player
+    </title>
+</head>
+
+<body>
+    <div class="container title">
+        <h1 class="text-center"><a href="/" style="text-decoration: none;color: #d63031">ZtreamTogether</a></h1>
+        <h2 class="text-center">Stream movies and videos together!</h2>
+    </div>
+    <br>
+    <div id="video-player" class="container d-flex justify-content-center">
+        <video id="my-video" class="video-js" muted controls preload="auto" width="1300" height="720">
+            <source src="<%= streamData %>" type='video/mp4'>
+        </video>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6 d-flex justify-content-start">
+                <h5 style="text-align: center" id="ready"><span class="spinner-border spinner-border-sm text-danger"
+                        role="status" aria-hidden="true"></span>
+                    <span>Waiting for users to load the source</span>
+                </h5>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <button type="button" onclick="syncsource()" class="btn btn-danger">Sync Source</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ZtreamTogether
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="container d-flex">
+        <h5 style="text-align: center" id="ready"><span class="spinner-border spinner-border-sm text-danger justify-content-end"
+                role="status" aria-hidden="true"></span>
+            <span>Waiting for users to load the source</span>
+        </h5>
+        <button type="button" class="btn btn-danger justify-content-end">Sync Source</button>
+    </div>-->
+
+
+    <div class="container-fluid footer">
+        <div style="position: relative;">
+            <svg id="footersvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+                <path fill="#d63031" fill-opacity="1"
+                    d="M0,96L48,106.7C96,117,192,139,288,149.3C384,160,480,160,576,149.3C672,139,768,117,864,112C960,107,1056,117,1152,122.7C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+                </path>
+            </svg>
+            <div class="footertext">
+                Made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                </svg> by Zuntie
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
+        </script>
+    <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+
+    <style>
+        html,
+        body {
+            -ms-content-zooming: none;
+            touch-action: none;
+            overflow-x: hidden;
+            overflow-x: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            background-color: #2f3640;
+        }
+
+        h1 {
+            color: #d63031;
+            font-weight: bold;
+            font-size: 70px;
+        }
+
+        h2,
+        h5 {
+            line-height: 2vh;
+            color: white;
+        }
+
+        .footer {
+            margin-top: 0%;
+        }
+
+        .footertext {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 450%);
+            color: white;
+            opacity: 75%;
+        }
+
+        #footersvg {
+            width: 110%;
+            transform: translate(-1%, 0%);
+        }
+    </style>
+
+
+    <script>
+        // Variables
+        var player = videojs('my-video')
+        var socket = io()
+        var canPlay = false
+        var lastSeekedPosition = 0
+
+
+        // Constants
+        const videoElement = document.querySelector('video')
+        const myVideoElement = document.querySelector('#video-player')
+        const url = window.location.href;
+        const regex = /\/([^\/]+)$/; // Matches the last string after a forward slash
+        const match = regex.exec(url);
+        const roomId = match[1];
+
+
+        // Connect to the socket
+        socket.on('connect', function () {
+            console.log(`Connected to room ${roomId}`);
+            socket.emit('join', roomId);
+        });
+
+        /*
+        
+        █▀▀█ █   █▀▀█ █  █ █▀▀ █▀▀█ 
+        █▄▄█ █   █▄▄█ █▄▄█ █▀▀ █▄▄▀ 
+        █    ▀▀▀ ▀  ▀ ▄▄▄█ ▀▀▀ ▀ ▀▀
+        
+        */
+
+
+        // When the "play" button gets pressed
+        player.on('play', function () {
+            console.log('Play CLIENT')
+            if (canPlay == true) {
+                socket.emit('play', { roomId });
+            } else {
+                // Alert here
+                player.pause();
+                return
+            }
+        });
+
+        // When the "pause" button gets pressed
+        player.on('pause', function () {
+            console.log('Pause CLIENT');
+            socket.emit('pause', { roomId });
+            console.log(player.duration())
+
+            if (videoElement.currentTime == player.duration()) {
+                setTimeout(function () {
+
+                }, 1000);
+            }
+        });
+
+        // When the user is "seeking" or changes the playback position
+        videoElement.addEventListener('seeked', () => {
+            if (videoElement.currentTime !== lastSeekedPosition) {
+                var currTime = videoElement.currentTime
+                console.log('User has manually changed the playback position');
+                socket.emit('seek', { roomId, currTime });
+                lastSeekedPosition = videoElement.currentTime;
+            }
+        });
+
+        // When the source is fully loaded
+        player.on('loadedmetadata', function () {
+            socket.emit('ready', { room: roomId });
+            console.log('Ready up')
+        });
+
+        // When user presses on Sync Source
+        function syncsource() {
+            var currTime = videoElement.currentTime
+            socket.emit('sync', { roomId, currTime });
+        }
+
+
+        /*
+         
+        █▀▀▀█ █▀▀█ █▀▀ █ █ █▀▀ ▀▀█▀▀ 
+        ▀▀▀▄▄ █  █ █   █▀▄ █▀▀   █   
+        █▄▄▄█ ▀▀▀▀ ▀▀▀ ▀ ▀ ▀▀▀   ▀  
+
+        */
+
+
+        // Recieved "play" from socket
+        socket.on('play', function () {
+            player.play();
+            console.log('Play CLIENT SOCKET')
+        });
+
+        // Recieved "pause" from socket
+        socket.on('pause', function () {
+            player.pause();
+            console.log('Pause CLIENT SOCKET')
+        });
+
+        // Recieved "seek" from socket
+        socket.on('seek', function (data) {
+            console.log('Seek CLIENT');
+            videoElement.currentTime = data.currTime;
+            player.pause();
+        });
+
+        // Recieved "allReady" from socket
+        socket.on('allReady', function () {
+            console.log('Everyone is ready')
+            canPlay = true
+            document.querySelector('#ready').innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#d63031" class="bi bi-check-lg" viewBox="0 0 20 20">
+  <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+</svg> All users are ready to play.
+            `;
+        });
+
+        // Recieved "notAllReady" from socket
+        socket.on('notAllReady', function (data) {
+            console.log(data)
+            canPlay = false
+            document.querySelector('#ready').innerHTML = `<span class="spinner-border spinner-border-sm text-danger" role="status" aria-hidden="true"></span>
+  <span>Waiting for users to load the source</span>`;
+        })
+
+        // Recieved "sync" from socket
+        socket.on('sync', function (data) {
+            console.log('Sync CLIENT');
+            videoElement.currentTime = data.currTime;
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            document.querySelector('.toast-body').textContent = 'Synced source to everyone.'
+            toastBootstrap.show()
+            player.pause();
+        });
+
+        socket.on('userjoin', function (data) {
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            document.querySelector('.toast-body').textContent = `A user joined the stream!`
+            toastBootstrap.show()
+        })
+
+        socket.on('userdisconnect', function (data) {
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            document.querySelector('.toast-body').textContent = `A user left the stream!`
+            toastBootstrap.show()
+        })
+    </script>
+
+</body>
+</html>

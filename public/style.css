@@ -1,0 +1,90 @@
+body {
+    background-color: #2f3640;
+}
+
+h1 {
+    color: #d63031;
+    font-weight: bold;
+    font-size: 70px;
+}
+
+h2 {
+    line-height: 2vh;
+    color: white;
+}
+
+#buttons {
+    margin: 5px;
+    padding: 20px;
+    font-size: 18px;
+}
+
+.title {
+    margin-top: 15%;
+    margin-bottom: 3%;
+}
+
+.notFoundTitle {
+    margin-top: 15%;
+    margin-bottom: 1.5%;
+}
+
+.modal-content {
+    background: #2f3640;
+}
+
+.modal-title {
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+.col-form-label {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.form-control {
+    background-color: #262b33;
+    border-color: #262b33;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .05), 0 4px 8px rgba(0, 0, 0, .05);
+    color: white;
+    padding: 10px;
+}
+
+.form-control:focus {
+    background-color: #262b33;
+    outline: 0;
+    border-color: #d63031;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: white;
+    transform: scale(1.00);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .20), 0 4px 8px rgba(0, 0, 0, .06);
+}
+
+.hide-this {
+    display: none;
+}
+
+#homeButton {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 20px;
+    margin-top: 0;
+}
+
+.footertext {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 450%);
+    color: white;
+    opacity: 75%;
+}
+
+#footersvg {
+    width: 110%;
+    transform: translate(-1%, 0%);
+}
