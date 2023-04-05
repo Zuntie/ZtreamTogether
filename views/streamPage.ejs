@@ -142,7 +142,7 @@
         // Variables
         var player = videojs('my-video')
         var socket = io()
-        var canPlay = false
+        var canPlay = true
         var lastSeekedPosition = 0
 
 
@@ -249,7 +249,7 @@
         // Recieved "allReady" from socket
         socket.on('allReady', function () {
             console.log('Everyone is ready')
-            canPlay = true
+            //canPlay = true
             document.querySelector('#ready').innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#d63031" class="bi bi-check-lg" viewBox="0 0 20 20">
   <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
@@ -260,7 +260,7 @@
         // Recieved "notAllReady" from socket
         socket.on('notAllReady', function (data) {
             console.log(data)
-            canPlay = false
+            //canPlay = false
             document.querySelector('#ready').innerHTML = `<span class="spinner-border spinner-border-sm text-danger" role="status" aria-hidden="true"></span>
   <span>Waiting for users to load the source</span>`;
         })
