@@ -8,13 +8,13 @@ You can then invite people by sharing the link or the stream id.
 Clone the project  
 
 ~~~bash  
-  git clone https://github.com/Zuntie/ZtreamTogether
+git clone https://github.com/Zuntie/ZtreamTogether
 ~~~
 
 Go to the project directory  
 
 ~~~bash  
-  cd ZtreamTogether
+cd ZtreamTogether
 ~~~
 
 Install dependencies  
